@@ -203,9 +203,9 @@ def load_models():
     model_url = "https://drive.google.com/uc?export=download&id=1jjGY8HALMzKAG2Pli0nGYAfCV-tuIKwT"
     
     if not os.path.exists('models.pkl'):
-        st.info("📥 Downloading models.pkl... This may take a few moments.")
+        # st.info("📥 Downloading models.pkl... This may take a few moments.")
         gdown.download(model_url, 'models.pkl', quiet=False)
-        st.success("✅ Download complete!")
+        # st.success("✅ Download complete!")
     
     try:
         with open('models.pkl', 'rb') as f:
