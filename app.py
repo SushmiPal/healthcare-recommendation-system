@@ -2,12 +2,16 @@
 Healthcare Risk Assessment and Recommendation System
 Professional Streamlit Web Application
 """
+
+
 import streamlit as st
 import pandas as pd
 import numpy as np
 import pickle
 import os
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
+
+import gdown
 
 # Page configuration
 st.set_page_config(
@@ -195,7 +199,14 @@ st.markdown("""
 # Load models and preprocessors
 @st.cache_resource
 def load_models():
-    """Load trained models and preprocessors"""
+    """Load trained models and preprocessors, downloading if needed."""
+    model_url = "https://drive.google.com/uc?export=download&id=1jjGY8HALMzKAG2Pli0nGYAfCV-tuIKwT"
+    
+    if not os.path.exists('models.pkl'):
+        st.info("📥 Downloading models.pkl... This may take a few moments.")
+        gdown.download(model_url, 'models.pkl', quiet=False)
+        st.success("✅ Download complete!")
+    
     try:
         with open('models.pkl', 'rb') as f:
             models = pickle.load(f)
@@ -209,7 +220,7 @@ def load_models():
             recommendation_db = pickle.load(f)
         return models, scaler_dict, oe, feature_lists, recommendation_db
     except FileNotFoundError as e:
-        st.error(f"Model files not found. Please run the save_models.py script first. Error: {e}")
+        st.error(f"❌ Model files not found: {e}")
         st.stop()
 
 # Initialize session state
